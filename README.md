@@ -1,2 +1,1 @@
-# EQ
-企业qq软件设计
+Books Management System  图书管理系统
