@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shuyun.mapper.ManagerInfoMapper">
+
+<resultMap id="managerInfoResult" type="com.shuyun.bean.Manager">
+    <result property="id" column="ID"/>
+    <result property="name" column="name"/>
+    <result property="pwd" column="pwd"/>
+    <result property="sysSet" column="sysset"/>
+    <result property="readerSet" column="readerset"/>
+    <result property="bookSet" column="bookset"/>
+    <result property="borrowBack" column="borrowback"/>
+    <result property="sysQuery" column="sysquery"/>
+</resultMap>
+
+<select id="getManagerInfo" resultMap="managerInfoResult">
+   select * from tb_manager;
+</select>
+
+<select id="getPurviewInfo" resultMap="managerInfoResult">
+    SELECT * FROM tb_purview;
+</select>
+
+    <insert id="ManagerAdd" parameterType="com.shuyun.bean.Manager">
+        INSERT INTO tb_manager (name,pwd) VALUES (#{name},#{pwd});
+    </insert>
+
+    <insert id="purviewModify" parameterType="com.shuyun.bean.Manager">
+        DELETE  FROM tb_purview WHERE  ID=#{id};
+        INSERT  INTO tb_purview VALUES (#{id},#{sysSet},#{readerSet},#{bookSet},#{borrowBack},#{sysQuery});
+    </insert>
+
+<delete id="managerDelete" parameterType="com.shuyun.bean.Manager">
+    DELETE FROM tb_manager WHERE ID=#{id};
+    DELETE FROM tb_purview WHERE ID=#{id};
+</delete>
+
+<update id="pwdModify"   parameterType="com.shuyun.bean.Manager">
+    UPDATE tb_manager SET pwd=#{pwd} WHERE ID=#{id}
+</update>
+
+
+
+
+
+
+
+
+
+</mapper>

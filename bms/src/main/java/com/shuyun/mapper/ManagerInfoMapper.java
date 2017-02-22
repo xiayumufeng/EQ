@@ -10,5 +10,16 @@ import java.util.List;
  */
 @Component
 public interface ManagerInfoMapper {
+
     public List<Manager> getManagerInfo();
+
+    public List<Manager> getPurviewInfo();
+
+    public void ManagerAdd(Manager manager);
+
+    public void purviewModify(Manager manager);
+
+    public void managerDelete(int id);
+
+    public void pwdModify(Manager manager);
 }

@@ -8,7 +8,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class Application {
     public static String APPLICATION_CONTEXT = "applicationContext.xml";
-    public static ApplicationContext getApplicationContext(){
+
+    public static ApplicationContext getApplicationContext() {
         return new ClassPathXmlApplicationContext(APPLICATION_CONTEXT);
     }
 
