@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shuyun.mapper.BookMapper">
+
+    <resultMap id="bookInfo" type="com.shuyun.bean.Book">
+        <result property="barCode" column="barcode"/>
+        <result property="bookName" column="bookname"/>
+        <result property="author" column="author"/>
+        <result property="translator" column="translator"/>
+        <result property="price" column="price"/>
+        <result property="page" column="page"/>
+        <result property="typeID" column="ID"/>
+        <result property="typeName" column="typename"/>
+        <result property="inTime" column="inTime"/>
+        <result property="isbn" column="ISBN"/>
+        <result property="pubName" column="pubname"/>
+        <result property="bookCaseID" column="ID"/>
+        <result property="bookCaseName" column="bookcasename"/>
+        <result property="operator" column="operator"/>
+        <result property="storage" column="storage"/>
+
+    </resultMap>
+
+    <select id="getBookInfo" resultMap="bookInfo">
+        SELECT tb_bookinfo.barcode AS barcode, tb_bookinfo.bookname AS bookname, tb_booktype.typename AS typename,
+        tb_bookcase.`name` AS  bookcasename,tb_publishing.pubname AS pubname,`storage`as storage
+        FROM `tb_bookinfo`
+        LEFT JOIN tb_booktype ON tb_booktype.ID=tb_bookinfo.typeid
+        JOIN tb_bookcase ON tb_bookcase.ID=tb_bookinfo.bookcase
+        JOIN tb_publishing ON tb_bookinfo.ISBN=tb_publishing.ISBN;
+    </select>
+
+
+   <insert id="saveToBookInfo" parameterType="com.shuyun.bean.Book">
+    INSERT INTO db_library.tb_bookinfo (`barcode`, `bookname`, `author`, `translator`, `price`, `page`, `storage`, `inTime`, `operator`)
+    VALUES (#{barCode}, #{bookName}, #{author}, #{translator}, #{price}, #{page}, #{storage}, #{inTime}, #{operator});
+
+    UPDATE db_library.tb_bookinfo
+    SET tb_bookinfo.typeid=(SELECT ID FROM tb_booktype WHERE tb_booktype.typename=#{typeName})
+    WHERE tb_bookinfo.barcode=#{barCode};
+
+    UPDATE db_library.tb_bookinfo
+    SET tb_bookinfo.bookcase=(SELECT ID FROM tb_bookcase WHERE tb_bookcase.`name`=#{bookCaseName})
+    WHERE tb_bookinfo.barcode=#{barCode};
+
+    UPDATE db_library.tb_bookinfo
+    SET tb_bookinfo.ISBN=(SELECT tb_publishing.ISBN FROM tb_publishing WHERE tb_publishing.pubname=#{pubName})
+    WHERE tb_bookinfo.barcode=#{barCode};
+   </insert>
+
+    <insert id="bookModify" parameterType="com.shuyun.bean.Book">
+    DELETE  FROM db_library.tb_bookinfo WHERE  barcode=#{barCode};
+    INSERT INTO db_library.tb_bookinfo (`barcode`, `bookname`, `author`, `translator`, `price`, `page`, `storage`, `inTime`, `operator`)
+    VALUES (#{barCode}, #{bookName}, #{author}, #{translator}, #{price}, #{page}, #{storage}, #{inTime}, #{operator});
+
+    UPDATE db_library.tb_bookinfo
+    SET tb_bookinfo.typeid=(SELECT ID FROM tb_booktype WHERE tb_booktype.typename=#{typeName})
+    WHERE tb_bookinfo.barcode=#{barCode};
+
+    UPDATE db_library.tb_bookinfo
+    SET tb_bookinfo.bookcase=(SELECT ID FROM tb_bookcase WHERE tb_bookcase.`name`=#{bookCaseName})
+    WHERE tb_bookinfo.barcode=#{barCode};
+
+    UPDATE db_library.tb_bookinfo
+    SET tb_bookinfo.ISBN=(SELECT tb_publishing.ISBN FROM tb_publishing WHERE tb_publishing.pubname=#{pubName})
+    WHERE tb_bookinfo.barcode=#{barCode};
+    </insert>
+
+    <delete id="bookDel" parameterType="com.shuyun.bean.Book">
+         DELETE  FROM db_library.tb_bookinfo WHERE  barcode=#{barCode};
+    </delete>
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
